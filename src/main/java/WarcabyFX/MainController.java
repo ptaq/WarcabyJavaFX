@@ -87,10 +87,10 @@ public class MainController {
 
     private ObservableList<Button> lista;
 
-    static Image CzarnyP = new Image(Main.class.getResourceAsStream("/image/PawnB.png"));
-    static Image BialyP = new Image(Main.class.getResourceAsStream("/image/PawnW.png"));
-    static Image krolowaC = new Image(Main.class.getResourceAsStream("/image/KingB.png"));
-    static Image krolowaB = new Image(Main.class.getResourceAsStream("/image/KingW.png"));
+    static final Image CZARNYP = new Image(Main.class.getResourceAsStream("/image/PawnB.png"));
+    static final Image BIALYP = new Image(Main.class.getResourceAsStream("/image/PawnW.png"));
+    static final Image KROLOWAC = new Image(Main.class.getResourceAsStream("/image/KingB.png"));
+    static final Image KROLOWAB = new Image(Main.class.getResourceAsStream("/image/KingW.png"));
 
     private Warcaby x = new Warcaby();                                           //utworzenie nowego obiektu klasy Warcaby
 
@@ -168,16 +168,17 @@ public class MainController {
     public void wybierzPionka(javafx.event.ActionEvent e) {
         Node source = (Node) e.getSource();           //rzutowanie na obiekt typu Node
         if (GridPane.getRowIndex(source) == null) {
-            x.ruch[0] = 0; //pola zerowe wczytuje jako null, trzeba zamienic je na 0
+            x.setRuch1(0); //pola zerowe wczytuje jako null, trzeba zamienic je na 0
         } else {
-            x.ruch[0] = GridPane.getRowIndex(source);// kolumny i wiersze
+            x.setRuch1(GridPane.getRowIndex(source));// kolumny i wiersze
+                                                     // zamienione miejscami
         }
         if (GridPane.getColumnIndex(source) == null) {
-            x.ruch[1] = 0;
+            x.setRuch2(0);
         } else {
-            x.ruch[1] = GridPane.getColumnIndex(source);
+            x.setRuch2(GridPane.getColumnIndex(source));     
         }
-        // zamienione miejscami
+        
         x.graj();
 
     }
@@ -189,15 +190,15 @@ public class MainController {
         Button jaki_guzior = (Button) textProperty.getBean();
 
         if ("1".equals(newValue)) {
-            jaki_guzior.setGraphic(new ImageView(CzarnyP));
+            jaki_guzior.setGraphic(new ImageView(CZARNYP));
         } else if ("2".equals(newValue)) {
-            jaki_guzior.setGraphic(new ImageView(BialyP));
+            jaki_guzior.setGraphic(new ImageView(BIALYP));
         } else if ("".equals(newValue)) {
             jaki_guzior.setGraphic(null);
         } else if ("3".equals(newValue)) {
-            jaki_guzior.setGraphic(new ImageView(krolowaC));
+            jaki_guzior.setGraphic(new ImageView(KROLOWAC));
         } else if ("6".equals(newValue)) {
-            jaki_guzior.setGraphic(new ImageView(krolowaB));
+            jaki_guzior.setGraphic(new ImageView(KROLOWAB));
         }
     }
 
@@ -207,9 +208,9 @@ public class MainController {
         int i = 0;
         for (Button x : lista) {
             if (i < 12) {
-                x.setGraphic(new ImageView(CzarnyP));
+                x.setGraphic(new ImageView(CZARNYP));
             } else if (i > 19) {
-                x.setGraphic(new ImageView(BialyP));
+                x.setGraphic(new ImageView(BIALYP));
             } else {
                 x.setGraphic(null);
             }

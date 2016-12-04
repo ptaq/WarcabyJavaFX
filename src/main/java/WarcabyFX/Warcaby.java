@@ -8,8 +8,8 @@ public class Warcaby {
     private int szachownica[][];                           //referencja tablicy int [][]
     private StringProperty stringProperties[][];           //referencja tablicy StringProperty[][]
 
-    public int ruch[] = new int[2]; // tablica do przechowywania ruchów.Metoda onClick wybierzPionka(ActionEvent e) z Kontrolera, 
-    //zapisuje tu wspó³rzêdne pionka. ruch[0] wiersz, ruch[1] kolumna,
+    private int ruch1, ruch2; // zmienne do przechowywania ruchów.Metoda onClick wybierzPionka(ActionEvent e) z Kontrolera, 
+    //zapisuje tu wspó³rzêdne pionka. ruch1 wiersz, ruch2 kolumna,
 
     private int pionkiBialy;       //ilosc punktow gracza bialego i czarnego
     private int pionkiCzarny;
@@ -17,12 +17,12 @@ public class Warcaby {
     private int sterowanieKolejnoscia;          //zmiena s³u¿y do obs³ugi rozgrywki w metodzie graj().
     private int aktualnyGracz;                  //zmiena okreœla który gracz aktualnie gra 2=bialy,1=czarny
 
-    int aktualnaPozycjaX, aktualnaPozycjaY;
-    int tabelaBicieWPionkiem[] = new int[10];
+    private int aktualnaPozycjaX, aktualnaPozycjaY;
+    private int[] tabelaBicieWielokrotnePionkiem = new int[10];
 
     private StringProperty aktualnyGraczProperties = new SimpleStringProperty(""); //zmiena slu¿y do obslugi labela 
 
-    void nowaGra() {             //metoda wywo³ywana po uruchomieniu programu oraz zawsze po naciœniêciu przycisku "Nowa gra"
+    public void nowaGra() {             //metoda wywo³ywana po uruchomieniu programu oraz zawsze po naciœniêciu przycisku "Nowa gra"
         //zeruje wszystkie zmienne oraz ustawia odpowiednio tablice odwzorowuj¹ce ustawienie 
         int x[][]
                 = {{0, 1, 0, 1, 0, 1, 0, 1},
@@ -104,10 +104,10 @@ public class Warcaby {
 
     }
 
-    void wybor() {
+    private void wybor() {
 
-        aktualnaPozycjaX = ruch[0];
-        aktualnaPozycjaY = ruch[1];
+        aktualnaPozycjaX = ruch1;
+        aktualnaPozycjaY = ruch2;
 
         if (this.szachownica[aktualnaPozycjaX][aktualnaPozycjaY] != aktualnyGracz && this.szachownica[aktualnaPozycjaX][aktualnaPozycjaY] != aktualnyGracz * 3) { //warunek sprawdza czy 
             //wybrany pionek nale¿y do gracza
@@ -126,8 +126,8 @@ public class Warcaby {
     }
 
     private void wprowadzenieRuchuPionka() {
-        int gdzieRuszycWiersz = ruch[0];
-        int gdzieRuszycKolumna = ruch[1];
+        int gdzieRuszycWiersz = ruch1;
+        int gdzieRuszycKolumna = ruch2;
         ruchPionka(gdzieRuszycWiersz, gdzieRuszycKolumna);
 
     }
@@ -171,7 +171,7 @@ public class Warcaby {
 
     }
 
-    public void biciePionkiem(int gdzieRuszycWiersz, int gdzieRuszycKolumna) {
+    private void biciePionkiem(int gdzieRuszycWiersz, int gdzieRuszycKolumna) {
         int pomoc2;
 
         if (((gdzieRuszycWiersz == aktualnaPozycjaX - 2) || (gdzieRuszycWiersz == aktualnaPozycjaX + 2))
@@ -249,10 +249,10 @@ public class Warcaby {
         boolean a1 = false; // sprawdza czy mozliwe jest kolejne
         // bicie, jesli tak, wtedy uruchamia
         // ponownie metode 'bicie'
-        tabelaBicieWPionkiem[8] = gdzieRuszycWiersz;
-        tabelaBicieWPionkiem[9] = gdzieRuszycKolumna;
-        tabelaBicieWPionkiem[0] = tabelaBicieWPionkiem[1] = tabelaBicieWPionkiem[2] = tabelaBicieWPionkiem[3]
-                = tabelaBicieWPionkiem[4] = tabelaBicieWPionkiem[5] = tabelaBicieWPionkiem[6] = tabelaBicieWPionkiem[7] = 0;
+        tabelaBicieWielokrotnePionkiem[8] = gdzieRuszycWiersz;
+        tabelaBicieWielokrotnePionkiem[9] = gdzieRuszycKolumna;
+        tabelaBicieWielokrotnePionkiem[0] = tabelaBicieWielokrotnePionkiem[1] = tabelaBicieWielokrotnePionkiem[2] = tabelaBicieWielokrotnePionkiem[3]
+                = tabelaBicieWielokrotnePionkiem[4] = tabelaBicieWielokrotnePionkiem[5] = tabelaBicieWielokrotnePionkiem[6] = tabelaBicieWielokrotnePionkiem[7] = 0;
         // sprawdza czy istnieje jesli tak to zmienia boola i
         // ustawia wartosci dx do sprawdzenia
 
@@ -265,8 +265,8 @@ public class Warcaby {
                 // 1/4 lini, czy mozna wykonac bicie, jesli tak nadaje wartosci tabelaBicieWPionkiem[0] i
                 // tabelaBicieWPionkiem[1] od przyrownania i zmienia flage boola, ktora zacznie pentle while nizej
                 a1 = true;
-                tabelaBicieWPionkiem[0] = gdzieRuszycWiersz - 2;
-                tabelaBicieWPionkiem[1] = gdzieRuszycKolumna - 2;
+                tabelaBicieWielokrotnePionkiem[0] = gdzieRuszycWiersz - 2;
+                tabelaBicieWielokrotnePionkiem[1] = gdzieRuszycKolumna - 2;
             }
         }
         if (gdzieRuszycWiersz + 2 < 8 && 0 <= gdzieRuszycKolumna - 2) { // linia
@@ -276,8 +276,8 @@ public class Warcaby {
                     && this.szachownica[gdzieRuszycWiersz + 1][gdzieRuszycKolumna - 1] != 0
                     && this.szachownica[gdzieRuszycWiersz + 2][gdzieRuszycKolumna - 2] == 0) {
                 a1 = true;
-                tabelaBicieWPionkiem[2] = gdzieRuszycWiersz + 2;
-                tabelaBicieWPionkiem[3] = gdzieRuszycKolumna - 2;
+                tabelaBicieWielokrotnePionkiem[2] = gdzieRuszycWiersz + 2;
+                tabelaBicieWielokrotnePionkiem[3] = gdzieRuszycKolumna - 2;
             }
         }
         if (gdzieRuszycWiersz + 2 < 8 && gdzieRuszycKolumna + 2 < 8) {
@@ -286,8 +286,8 @@ public class Warcaby {
                     && this.szachownica[gdzieRuszycWiersz + 1][gdzieRuszycKolumna + 1] != 0
                     && this.szachownica[gdzieRuszycWiersz + 2][gdzieRuszycKolumna + 2] == 0) {
                 a1 = true;
-                tabelaBicieWPionkiem[4] = gdzieRuszycWiersz + 2;
-                tabelaBicieWPionkiem[5] = gdzieRuszycKolumna + 2;
+                tabelaBicieWielokrotnePionkiem[4] = gdzieRuszycWiersz + 2;
+                tabelaBicieWielokrotnePionkiem[5] = gdzieRuszycKolumna + 2;
             }
         }
         if (0 <= gdzieRuszycWiersz - 2 && gdzieRuszycKolumna + 2 < 8) {
@@ -296,8 +296,8 @@ public class Warcaby {
                     && this.szachownica[gdzieRuszycWiersz - 1][gdzieRuszycKolumna + 1] != 0
                     && this.szachownica[gdzieRuszycWiersz - 2][gdzieRuszycKolumna + 2] == 0) {
                 a1 = true;
-                tabelaBicieWPionkiem[6] = gdzieRuszycWiersz - 2;
-                tabelaBicieWPionkiem[7] = gdzieRuszycKolumna + 2;
+                tabelaBicieWielokrotnePionkiem[6] = gdzieRuszycWiersz - 2;
+                tabelaBicieWielokrotnePionkiem[7] = gdzieRuszycKolumna + 2;
             }
         }
 
@@ -320,13 +320,13 @@ public class Warcaby {
         // ponownego bicia, wartosci d ktore zostaly nadane w if'ach
         // wyzej musza sie rownac ruchowi jaki chcemy wykonac
         //       wprowadzWartosci();
-        int gdzieRuszycWiersz = ruch[0];
-        int gdzieRuszycKolumna = ruch[1];
-        if ((gdzieRuszycWiersz == tabelaBicieWPionkiem[0] || gdzieRuszycWiersz == tabelaBicieWPionkiem[2] || gdzieRuszycWiersz == tabelaBicieWPionkiem[4]
-                || gdzieRuszycWiersz == tabelaBicieWPionkiem[6])
-                && (gdzieRuszycKolumna == tabelaBicieWPionkiem[1] || gdzieRuszycKolumna == tabelaBicieWPionkiem[3] || gdzieRuszycKolumna == tabelaBicieWPionkiem[5]
-                || gdzieRuszycKolumna == tabelaBicieWPionkiem[7])) {
-            ruchPionka(tabelaBicieWPionkiem[8], tabelaBicieWPionkiem[9]);
+        int gdzieRuszycWiersz = ruch1;
+        int gdzieRuszycKolumna = ruch2;
+        if ((gdzieRuszycWiersz == tabelaBicieWielokrotnePionkiem[0] || gdzieRuszycWiersz == tabelaBicieWielokrotnePionkiem[2] || gdzieRuszycWiersz == tabelaBicieWielokrotnePionkiem[4]
+                || gdzieRuszycWiersz == tabelaBicieWielokrotnePionkiem[6])
+                && (gdzieRuszycKolumna == tabelaBicieWielokrotnePionkiem[1] || gdzieRuszycKolumna == tabelaBicieWielokrotnePionkiem[3] || gdzieRuszycKolumna == tabelaBicieWielokrotnePionkiem[5]
+                || gdzieRuszycKolumna == tabelaBicieWielokrotnePionkiem[7])) {
+            ruchPionka(tabelaBicieWielokrotnePionkiem[8], tabelaBicieWielokrotnePionkiem[9]);
 
         } else {                                                                     //Nieprawidlowy ruch!        
         }
@@ -348,8 +348,8 @@ public class Warcaby {
     }
 
     private void wprowadzenieRuchuKrolowej() {
-        int gdzieRuszycWiersz = ruch[0];
-        int gdzieRuszycKolumna = ruch[1];
+        int gdzieRuszycWiersz = ruch1;
+        int gdzieRuszycKolumna = ruch2;
         ruchIBicieKrolowej(gdzieRuszycWiersz, gdzieRuszycKolumna);
 
     }
@@ -587,8 +587,8 @@ public class Warcaby {
     private void jestKolejneBicieKrolowej2() {
         int k2, l2;
         boolean y = true;
-        int gdzieRuszycWiersz = ruch[0];
-        int gdzieRuszycKolumna = ruch[1];
+        int gdzieRuszycWiersz = ruch1;
+        int gdzieRuszycKolumna = ruch2;
 
         k2 = gdzieRuszycWiersz - aktualnaPozycjaX;
         l2 = gdzieRuszycKolumna - aktualnaPozycjaY;
@@ -660,6 +660,14 @@ public class Warcaby {
 
     public StringProperty getAktualnyGraczProperties() {
         return aktualnyGraczProperties;
+    }
+
+    public void setRuch1(int ruch1) {
+        this.ruch1 = ruch1;
+    }
+
+    public void setRuch2(int ruch2) {
+        this.ruch2 = ruch2;
     }
 
 }
